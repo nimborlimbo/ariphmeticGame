@@ -1,0 +1,257 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+    color: #001d30;
+}
+
+main {
+    height: 100vh;
+    width: 100vw;
+    background: linear-gradient(180deg, rgba(129, 190, 206, 0.6) 0%, rgba(232, 237, 231, 0.6) 100%);
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+h1, h2 {
+    font-weight: 500;
+    text-align: center;
+}
+
+p {
+    font-weight: 400;
+}
+
+.name {
+    outline: none;
+    background: #E8EDE7;
+    border: 1px solid rgba(55, 139, 164, 0.3);
+    text-align: center;
+    color: #012e4a;
+    font-size: 18px;
+}
+
+.btns-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    position: absolute;
+    bottom: 50px;
+    left: 0;
+    width: 100%;
+}
+
+.btn {
+    border-radius: 100px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn img {
+    width: 65%;
+}
+
+.play-btn {
+    background-color: #53af98;
+}
+
+.table-btn {
+    background-color: #378ba4;
+}
+
+.main-screen {
+    max-width: 1200px;
+    min-width: 280px;
+}
+
+.levels-info-list {
+    display: flex;
+    justify-content: center;
+}
+
+@media (min-width: 280px) {
+    h1 {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    h2 {
+        font-size: 16px;
+    }
+
+    p {
+        font-size: 14px;
+    }
+
+    .name {
+        width: 280px;
+        height: 60px;
+        border-radius: 15px;
+        margin: 0;
+        order: 3;
+    }
+
+    .btns-wrap {
+        flex-wrap: wrap;
+        justify-content: center;
+        bottom: 20px;
+    }
+
+    .btn {
+        width: 64px;
+        height: 64px;
+        margin-bottom: 15px;
+    }
+
+    .play-btn {
+        order: 2;
+        margin-left: 15px;
+    }
+    
+    .table-btn {
+        order: 1;
+        margin-right: 15px;
+    }
+
+    /* Главный экран */
+    .levels-info-list {
+        flex-direction: column;
+    }
+
+    .level-info {
+        width: 280px;
+        text-align: left;
+        margin-bottom: 40px;
+    }
+
+    .level-name {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        cursor: pointer;
+    }
+
+    .level-name::after {
+        content: '';
+        width: 32px;
+        height: 32px;
+        border-radius: 100px;
+        background-color: #E8EDE7;
+        background-image: url(icon/arrow.svg);
+        background-repeat: no-repeat;
+        background-size: 12px 6px;
+        background-position: 50% 50%;
+        transform: rotate(180deg);
+    }
+
+    .level-name-active::after {
+        transform: rotate(0);
+    }
+
+    .level-desc-block {
+        height: 0;
+        transform: scaleY(0);
+        transform-origin: 50% 0;
+        transition-duration: 400ms;
+    }
+
+    .level-desc-block-active {
+        transform: scaleY(1);
+    }
+
+    .level-desc {
+        margin-top: 15px;
+        margin-bottom: 10px;
+    }
+}
+
+@media (min-width: 520px) {
+    h1 {
+        font-size: 26px;
+        margin-bottom: 35px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    p {
+        font-size: 16px;
+    }
+
+    .main-screen {
+        padding-top: 20px;
+    }
+
+    .btns-wrap {
+        bottom: 30px;
+    }
+
+    .btn {
+        margin-bottom: 0;
+    }
+
+    .play-btn {
+        order: 3;
+        margin-left: 20px;
+    }
+    
+    .table-btn {
+        order: 1;
+        margin-right: 20px;
+    }
+
+    /* Главный экран */
+
+    .level-info {
+        width: 480px;
+    }
+
+    .level-name::after {
+        width: 46px;
+        height: 46px;
+        background-size: 16px 8px;
+    }
+}
+
+@media (min-width: 760px) {
+    h1 {
+        font-size: 30px;
+    }
+
+    h2 {
+        font-size: 22px;
+    }
+
+    .btn {
+        width: 80px;
+        height: 80px;
+    }
+
+    .name {
+        width: 320px;
+    }
+
+    .play-btn {
+        margin-left: 25px;
+    }
+    
+    .table-btn {
+        margin-right: 25px;
+    }
+
+    .level-name::after {
+        width: 50px;
+        height: 50px;
+        background-size: 20px 10px;
+    }
+}
+
+@media (min-width: 980px) {
+    
+}
+
