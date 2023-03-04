@@ -1,4 +1,4 @@
 "use strict";
-
-// let mainScreen = new MainScreen();
-// mainScreen.drawScreen(main);
+let main = document.querySelector('main');
+let mainScreen = new MainScreen();
+mainScreen.drawScreen(main);

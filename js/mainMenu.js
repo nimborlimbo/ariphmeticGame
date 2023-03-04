@@ -24,6 +24,7 @@ let levels =
 
 class MainScreen {
     #screen; #bottomMenu;
+    #leaderBoard = new LeaderBoard();
 
     constructor() {
         this.#screen = document.createElement('div');
@@ -54,6 +55,11 @@ class MainScreen {
             this.#screen.remove();
             new Game(new Player(name)).nextLevel();
         }
+    }
+
+    openLeaderBoard = () => {
+        document.querySelector('main').innerHTML = "";
+        this.#leaderBoard.draw(document.querySelector('main'));
     }
 
     #createLevelInfoList() {
@@ -93,7 +99,7 @@ class MainScreen {
         let bottomMenu = document.createElement('div');
         bottomMenu.className = "btns-wrap";
         let playBtn = this.#createBtn('play-btn', 'icon/play.svg', 'Играть', this.play);
-        let tableBtn = this.#createBtn('table-btn', 'icon/leaderboard.svg', 'Таблица');
+        let tableBtn = this.#createBtn('table-btn', 'icon/leaderboard.svg', 'Таблица', this.openLeaderBoard);
         let nameInput = '<input class="name" type="text" name="name" placeholder="Имя">';
         bottomMenu.insertAdjacentElement('beforeend', tableBtn);
         bottomMenu.insertAdjacentHTML('beforeend', nameInput);

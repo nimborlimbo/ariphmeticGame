@@ -139,6 +139,7 @@ p {
     background-repeat: no-repeat;
     background-position: 50% 50%;
     transform: rotate(90deg);
+    cursor: pointer;
 }
 
 .leaderboard-title {
