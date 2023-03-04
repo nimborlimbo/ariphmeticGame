@@ -1,3 +1,4 @@
+
 class Timer {
     constructor(time) {
         this.time = time;
@@ -14,16 +15,46 @@ class Timer {
 }
 
 class Level {
-    #gameArea;
-    #header;
-    #bottomMenu;
+    gameArea;
+    header;
+    bottomMenu;
 
-    constructor(player, levelName, time, levelRule = null) {
-        this.#header = this.createHeader(levelName, time, levelRule)
-        player.name
+    constructor() {
+        if (this.constructor == Level) {
+            throw new Error("Abstract classes can't be instantiated.");
+        }
     }
 
-    createHeader(levelName, time, levelRule = null) {
+    clearLevel() {
+        main.innerHTML = "";
+    }
+
+    start() {
+        
+    }
+
+    createGameArea() {
+        let margin = 20;
+        let header = document.querySelector('.header');
+        let bottomMenu = document.querySelector('.btns-wrap');
+        let gameAreaHeight = parseInt(bottomMenu.getBoundingClientRect().top) - 
+            parseInt(header.getBoundingClientRect().bottom) - margin;
+        let gameAreaPositionY = parseInt(header.getBoundingClientRect().bottom) + (margin / 2);
+        let gameArea = document.createElement('div');
+        gameArea.className = "game-area";
+        gameArea.style.height = gameAreaHeight + "px";
+        gameArea.style.top = gameAreaPositionY + "px";
+        return gameArea;
+    }
+
+    createRule(levelRule) {
+        let ruleElement = document.createElement('p');
+        ruleElement.className = "level-rule";
+        ruleElement.innerHTML = levelRule;
+        return ruleElement;
+    }
+
+    createHeader(levelName, time) {
         let header = document.createElement('div');
         header.className = "header";
     
@@ -38,22 +69,19 @@ class Level {
         wrap.insertAdjacentElement('beforeend', timer.element);
         timer.work();
     
-        if (levelRule != null) {
-            let ruleElement = document.createElement('p');
-            ruleElement.className = "level-rule";
-            ruleElement.innerHTML = levelRule;
-            wrap.insertAdjacentElement('beforeend', ruleElement);
-        }
-    
         header.insertAdjacentElement('beforeend', wrap);
-    
+        
         return header;
     }
 
     createBottomMenu(name) {
+        let bottomMenu = document.createElement('div');
+        bottomMenu.className = 'btns-wrap';
         let nameElement = document.createElement('p');
         nameElement.className = "name";
         nameElement.innerHTML = name;
+        bottomMenu.insertAdjacentElement('beforeend', nameElement);
+        return bottomMenu;
     }
 }
 

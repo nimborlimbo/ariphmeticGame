@@ -48,11 +48,11 @@ class MainScreen {
         this.#toggleVisibleLevelInfo();
     }
 
-    screenSwitch = () => {
+    play = () => {
         let name = this.#switchBottomMenu();
         if (name != false) {
             this.#screen.remove();
-            new Game(new Player(name));
+            new Game(new Player(name)).nextLevel();
         }
     }
 
@@ -92,7 +92,7 @@ class MainScreen {
     #createBottomMenu() {
         let bottomMenu = document.createElement('div');
         bottomMenu.className = "btns-wrap";
-        let playBtn = this.#createBtn('play-btn', 'icon/play.svg', 'Играть', this.screenSwitch);
+        let playBtn = this.#createBtn('play-btn', 'icon/play.svg', 'Играть', this.play);
         let tableBtn = this.#createBtn('table-btn', 'icon/leaderboard.svg', 'Таблица');
         let nameInput = '<input class="name" type="text" name="name" placeholder="Имя">';
         bottomMenu.insertAdjacentElement('beforeend', tableBtn);
@@ -118,6 +118,7 @@ class MainScreen {
         let childs = this.#bottomMenu.children;
         if (name.length > 0) {
             this.#bottomMenu.innerHTML = "";
+            this.#bottomMenu.remove();
             return name;
         } else {
             for (let i = 0; i < childs.length; i++) {

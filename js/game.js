@@ -22,6 +22,7 @@ class Player {
     
     constructor(name) {
         this.#name = name;
+        
     }
 
     get name() {
@@ -38,13 +39,25 @@ class Player {
 }
 
 class Game {
-    #mainScreen = new MainScreen();
-    #levels = [new evenOddLevel()];
     #player;
-    #leaderBoard = new LeaderBoard();
+    #levels = [];
+    #levelCurrent = -1;
+    // #leaderBoard = new LeaderBoard();
 
     constructor(player) {
         this.#player = player;
+        this.#levels = [new EvenOddLevel(player)];
+    }
+
+    nextLevel() {
+        if (this.#levelCurrent >= 0) 
+            this.#levels[this.#levelCurrent].clearLevel();
+        this.#levelCurrent++;
+        this.#levels[this.#levelCurrent].start();
+    }
+
+    gameOver() {
+
     }
 
 }

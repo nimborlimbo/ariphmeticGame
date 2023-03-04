@@ -98,7 +98,16 @@ p {
     font-weight: 500;
 }
 
-.even-odd {
+.level-rule {
+    transition-duration: 400ms;
+}
+
+.level-rule-change {
+    transform: scale(1.5);
+    transform: translateY(30px);
+}
+
+.game-area {
     width: 100vw;
     position: absolute;
     left: 0;
