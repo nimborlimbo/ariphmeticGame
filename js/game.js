@@ -46,7 +46,7 @@ class Game {
 
     constructor(player) {
         this.#player = player;
-        this.#levels = [new EvenOddLevel(player)];
+        this.#levels = [new EvenOddLevel(this.#player)];
     }
 
     nextLevel() {
