@@ -18,6 +18,7 @@ class Level {
     gameArea;
     header;
     bottomMenu;
+    maxScore;
 
     constructor() {
         if (this.constructor == Level) {
@@ -54,7 +55,7 @@ class Level {
         return ruleElement;
     }
 
-    createHeader(levelName, time) {
+    createHeader(levelName, timer) {
         let header = document.createElement('div');
         header.className = "header";
     
@@ -64,11 +65,7 @@ class Level {
         titleElement.className = "level-title";
         titleElement.innerHTML = levelName;
         header.insertAdjacentElement('beforeend', titleElement);
-    
-        let timer = new Timer(time);
         wrap.insertAdjacentElement('beforeend', timer.element);
-        timer.work();
-    
         header.insertAdjacentElement('beforeend', wrap);
         
         return header;

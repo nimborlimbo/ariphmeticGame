@@ -122,7 +122,6 @@ class Game {
     #player;
     #levels = [];
     #levelCurrent = -1;
-    // #leaderBoard = new LeaderBoard();
 
     constructor(player) {
         this.#player = player;
@@ -133,7 +132,7 @@ class Game {
         if (this.#levelCurrent >= 0) 
             this.#levels[this.#levelCurrent].clearLevel();
         this.#levelCurrent++;
-        this.#levels[this.#levelCurrent].start();
+        let callback = this.#levels[this.#levelCurrent].start();
     }
 
     gameOver() {

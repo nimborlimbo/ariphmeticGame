@@ -1,9 +1,9 @@
 "use strict";
-let levels = 
+let levelsInfoArr = 
     [
         {
             "name": "Четные / Нечетные",
-            "desc": "После того, как выпадет случайное условие(четное или нечетное), на экране появятся числа, хаотично движущиеся по экрану. Ваша задача – нажать на те из них, которые удовлетворяют, выпавшее условие. Уровень закончится после выбора 5 чисел либо после истечения указанного времени.",
+            "desc": "После того, как выпадет случайное условие(четное или нечетное), на экране появятся числа, хаотично движущиеся по экрану. Ваша задача – нажать на те из них, которые удовлетворяют выпавшее условие. Уровень закончится после выбора 5 чисел либо после истечения указанного времени.",
             "time": 60,
             "score": 10
         },
@@ -15,7 +15,7 @@ let levels =
         },
         {
             "name": "Арифметическое выражение",
-            "desc": "На экране, в случайном порядке, будут появлятся числа. Ваша задача – собрать из символов, которые будут указаны внизу экрана, выражение, равно выпавшему числу. Чем больше выражение Вы соберете, тем больше балов получите. Уровень закончится после истечения указанного времени.",
+            "desc": "На экране в случайном порядке будут появлятся числа. Ваша задача – собрать из символов, которые будут указаны внизу экрана, выражение, равно выпавшему числу. Чем больше выражение Вы соберете, тем больше балов получите. Уровень закончится после истечения указанного времени.",
             "time": 90,
             "score": 30
         },
@@ -31,7 +31,7 @@ class MainScreen {
         this.#screen.className = "main-screen";
 
         let countLevels = document.createElement('h1');
-        countLevels.insertAdjacentHTML('beforeend', "Количество уровней: <span>" + levels.length + "</span>");
+        countLevels.insertAdjacentHTML('beforeend', "Количество уровней: <span>" + levelsInfoArr.length + "</span>");
 
         this.#screen.insertAdjacentElement('beforeend', countLevels);
     
@@ -66,7 +66,7 @@ class MainScreen {
         let levelsInfoList = document.createElement('div');
         levelsInfoList.className = "levels-info-list";
     
-        levels.forEach((item, index) => {
+        levelsInfoArr.forEach((item, index) => {
             levelsInfoList.insertAdjacentElement('beforeend', this.#createLevelInfoItem(index+1, item.name, item.desc, item.time, item.score));
         });
         return levelsInfoList;
