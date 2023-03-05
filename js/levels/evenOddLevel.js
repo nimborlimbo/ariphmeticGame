@@ -3,7 +3,7 @@ class EvenOddLevel extends Level {
     #maxScore = 10; #score = 0; 
     #maxAttempts = 5; #attempts = 0;
     #targetsCount = 12; #targetsArr = [];
-    #gameArea; #header; #bottomMenu; #ruleElement;
+    #gameArea; #header; #bottomMenu; #ruleElement; #resultsContainer;
     #player; #timer = new Timer(60);
 
     constructor(player) {
@@ -24,22 +24,39 @@ class EvenOddLevel extends Level {
         }, 2800);
     }
 
+    #finish() {
+        
+    }
+
     #createTargets() {
         for (let i = 0; i < this.#targetsCount; i++) {
             if (i < this.#maxAttempts)
                 this.#targetsArr.push(new EvenOddTarget(this.#gameArea, this.#ruleId));
             else 
                 this.#targetsArr.push(new EvenOddTarget(this.#gameArea, Math.abs(this.#ruleId - 1)));
-            if (this.#targetsArr[i].value % 2 == this.#ruleId)
-                this.#targetsArr[i].element.addEventListener('click', () => {
-
-                });
+            this.#targetsArr[i].element.addEventListener('click', () => {
+                this.#targetClick(this.#targetsArr[i]);
+            });
         }
     }
 
+    #targetClick(target) {
+        this.#score += target.score;
+        this.#attempts++;
+        target.activate(this.#ruleId, this.#resultsContainer);
+        if (this.#attempts >= this.#maxAttempts) 
+            this.#finish();
+    }       
+
     #createBottomMenu(name) {
         this.#bottomMenu = super.createBottomMenu(name);
+        this.#bottomMenu.style.flexDirection = 'column';
+        this.#bottomMenu.style.alignItems = 'center';
+        let resultsContainer = document.createElement('div');
+        resultsContainer.className = "even-odd-results-container";
+        this.#bottomMenu.insertAdjacentElement('afterbegin', resultsContainer);   
         main.insertAdjacentElement('beforeend', this.#bottomMenu);
+        this.#resultsContainer = resultsContainer;
     }
 
     #createHeader(levelName) {
@@ -88,20 +105,20 @@ class EvenOddLevel extends Level {
 
 class EvenOddTarget {
     #x; #y;
-    #stepX; #stepY;
+    #x2; #y2;
+    #speed = 10;
     #sizeElement;
     #score = 2;
     #value;
     #element;
     #container; #containerWidth; #containerHeight;
+    #moveTimeout;
+    #ruleId;
     #condition = true;
     constructor(container, ruleId) {
         this.#container = container;
-        this.#value = parseInt(Math.random() * 100);
-        if (this.#value % 2 != ruleId) {
-            this.#value = (this.#value < 99) ? this.#value + 1 : this.#value - 1;
-        }
-
+        this.#ruleId = ruleId;
+        this.#setValue();
         this.#element = this.#createTargetElement();
         this.#container.insertAdjacentElement('beforeend', this.#element);
         this.#sizeElement = this.#element.getBoundingClientRect().width;
@@ -110,10 +127,7 @@ class EvenOddTarget {
         this.#x = parseInt(Math.random() * (this.#containerWidth - this.#sizeElement));
         this.#y = parseInt(Math.random() * (this.#containerHeight - this.#sizeElement));
         this.#setPositionTargetElement();
-        setTimeout(() => {
-            this.#element.style.transitionDuration = "2000ms";
-        }, 0);
-        this.#move();
+        setTimeout(() => this.#move(), 0);
     }
 
     get value() {
@@ -128,18 +142,84 @@ class EvenOddTarget {
         return this.#element;
     }
 
-    #move() {
-        // while(this.#condition) {
-
-        // }
+    activate(ruleId, container) {
+        this.#condition = (this.#condition) ? true : false;
+        if (this.#ruleId == ruleId) 
+            this.#element.classList.add('input-success');
+        else
+            this.#element.classList.add('input-error');
+        console.log(ruleId + " " + this.#ruleId);
+        this.#element.style.opacity = 0;
+        setTimeout(() => {
+            this.#element.style.opacity = 1;
+            this.#element.style.position = "static";
+            this.#element.style.transform = "";
+            this.#element.remove();
+            container.insertAdjacentElement('beforeend', this.#element);
+            clearTimeout(this.#moveTimeout);
+        }, 200);
     }
 
-    #setDirection() {
-        
+    async #move() {
+        this.#setArrivalPoint();
+        let time = this.#calcTimeMovement();
+        this.#x = this.#x2;
+        this.#y = this.#y2;
+        this.#element.style.transition = "transform linear " + time + "ms, opacity linear 200ms";
+        this.#setPositionTargetElement();
+        if (this.#condition == true) 
+            this.#moveTimeout = setTimeout(() => this.#move(), time);
     }
 
-    #calcMovement() {
+    #setValue() {
+        this.#value = parseInt(Math.random() * 99) + 1;
+        if (this.#value % 2 != this.#ruleId) {
+            this.#value = (this.#value < 99) ? this.#value + 1 : this.#value - 1;
+        }
+    }
 
+    #setArrivalPoint() {
+        let xRandom = parseInt(Math.round(Math.random() * (this.#containerWidth - this.#sizeElement)));
+        let yRandom = parseInt(Math.round(Math.random() * (this.#containerHeight - this.#sizeElement)));
+
+        let randomDirection = parseInt(Math.round(Math.random()));
+
+        if (this.#x == 0 || this.#x == this.#containerWidth - this.#sizeElement) {
+            this.#x2 = xRandom;
+            this.#y2 = (parseInt(Math.round(Math.random())) == 1) ? this.#containerHeight - this.#sizeElement : 0;
+        } else if (this.#y == 0 || this.#y == this.#containerHeight - this.#sizeElement) {
+            this.#y2 = yRandom;
+            this.#x2 = (parseInt(Math.round(Math.random())) == 1) ? this.#containerWidth - this.#sizeElement : 0;
+        }
+        else if (randomDirection == 0) {
+            this.#x2 = (parseInt(Math.round(Math.random())) == 1) ? this.#containerWidth - this.#sizeElement : 0;
+            this.#y2 = yRandom;
+        } else {
+            this.#y2 = (parseInt(Math.round(Math.random())) == 1) ? this.#containerHeight - this.#sizeElement : 0;
+            this.#x2 = xRandom;
+        }
+    }
+
+    #calcTimeMovement() {
+        this.#setArrivalPoint();
+        let x1, x2, y1, y2;
+        if (this.#x < this.#x2) {
+            x1 = this.#x;
+            x2 = this.#x2;
+        } else {
+            x1 = this.#x2;
+            x2 = this.#x;
+        }
+
+        if (this.#y < this.#y2) {
+            y1 = this.#y;
+            y2 = this.#y2
+        } else {
+            y1 = this.#y2;
+            y2 = this.#y;
+        }
+        let distance = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+        return Math.round(distance / this.#speed) * 100;
     }
 
     #createTargetElement() {

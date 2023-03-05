@@ -21,8 +21,12 @@ p {
     font-weight: 400;
 }
 
+.input-success {
+    border: 2px solid rgb(0, 255, 21);
+}
+
 .input-error {
-    border: 1px solid rgb(190, 50, 50) !important;
+    border: 2px solid rgb(190, 50, 50) !important;
 }
 
 .name {
@@ -197,9 +201,23 @@ p {
     justify-content: center;
     background-color: #fff;
     border-radius: 100px;
-    width: 40px;
-    height: 40px;
+    font-size: 18px;
+    width: 46px;
+    height: 46px;
     cursor: pointer;
+}
+
+.even-odd-results-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    width: 300px;
+    margin: auto;
+}
+
+.even-odd-results-container .even-odd-target {
+    margin-right: -5px;
 }
 
 @media (min-width: 280px) {

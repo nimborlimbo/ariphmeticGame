@@ -21,7 +21,6 @@ class LeaderBoard {
     draw(parent) {
         parent.insertAdjacentElement('beforeend', this.#head);
         parent.insertAdjacentElement('beforeend', this.#leaderBoard);
-        console.log(this.#playerList.length);
     }
 
     #openMainScreen() {

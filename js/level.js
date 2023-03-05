@@ -1,4 +1,4 @@
-
+let game;
 class Timer {
     constructor(time) {
         this.time = time;
@@ -31,6 +31,10 @@ class Level {
     }
 
     start() {
+        
+    }
+
+    finish() {
         
     }
 

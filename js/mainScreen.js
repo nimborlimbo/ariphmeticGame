@@ -53,7 +53,7 @@ class MainScreen {
         let name = this.#switchBottomMenu();
         if (name != false) {
             this.#screen.remove();
-            new Game(new Player(name)).nextLevel();
+            game = new Game(new Player(name)).nextLevel();
         }
     }
 
