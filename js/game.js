@@ -1,26 +1,54 @@
 class LeaderBoard {
     #playerList = [];
     #head; #leaderBoard;
-    #backBtn;
+    #backBtn; #localPlayers;
 
     constructor() {
-        if (localStorage.getItem('playerList') != null) 
-            this.#playerList.push(...localStorage.getItem('playerList'));
+        this.#localPlayers = JSON.parse(localStorage.getItem('playerList'));
+        if (this.#localPlayers != null) 
+            this.#playerList.push(...this.#localPlayers);
         
         this.#head = this.#createHead();
         this.#leaderBoard = this.#createLeaderBoard();
+        console.log(localStorage.getItem('playerList'));
     }
 
     addPlayer(player) {
-        this.#playerList.push(player);
-        this.#sortPlayerList();
-        this.#leaderBoard = this.#createLeaderBoard();
-        localStorage.setItem('playerList', this.#playerList);
+        let check = this.#checkingPlayer(player);
+        if (check === false) {
+            let playerObj = {"name": player.name, "score": player.score};
+            this.#playerList.push(playerObj);
+            this.#sortPlayerList();
+            this.#leaderBoard = this.#createLeaderBoard();
+            localStorage.setItem('playerList', JSON.stringify(this.#playerList));
+        } else if (check === true) {
+            return false;
+        } else {
+            this.#playerList[check].score = player.score;
+            this.#sortPlayerList();
+            this.#leaderBoard = this.#createLeaderBoard();
+            localStorage.setItem('playerList', JSON.stringify(this.#playerList));
+        }
     }
 
     draw(parent) {
         parent.insertAdjacentElement('beforeend', this.#head);
         parent.insertAdjacentElement('beforeend', this.#leaderBoard);
+    }
+
+    #checkingPlayer(newPlayer) {
+        if (this.#playerList.length <= 0) return false;
+        for (var [key, player] of Object.entries(this.#playerList)) {
+            if (player.name === newPlayer.name) {
+                if (newPlayer.score > player.score) {
+                    console.log(player.score + " = " + newPlayer.score);
+                    return key;
+                } else {
+                    return true;
+                }
+            } 
+        }
+        return false;
     }
 
     #openMainScreen() {
@@ -34,7 +62,7 @@ class LeaderBoard {
     }
 
     #sortPlayerList() {
-        this.#playerList = this.#playerList.sort(() => a - b);
+        this.#playerList = this.#playerList.sort((a, b) => b.score - a.score);
     }
 
     #createLeaderBoard() {
@@ -43,7 +71,7 @@ class LeaderBoard {
 
         if (this.#playerList.length > 0) {
             for (let i = 0; i < this.#playerList.length; i++) {
-                let row = this.#createRow(i, this.#leaderBoard[i]);
+                let row = this.#createRow(i, this.#playerList[i]);
                 leaderBoard.insertAdjacentElement('beforeend', row);
             }
         } else {
@@ -124,18 +152,23 @@ class Game {
 
     constructor(player) {
         this.#player = player;
-        this.#levels = [new EvenOddLevel(this.#player)];
+        this.#levels = [new EvenOddLevel(this.#player), new MathProgressionLevel(this.#player), new AriphmeticExpressionLevel(this.#player)];
     }
 
     nextLevel() {
         if (this.#levelCurrent >= 0) 
             this.#levels[this.#levelCurrent].clearLevel();
         this.#levelCurrent++;
-        let callback = this.#levels[this.#levelCurrent].start();
+        if (this.#levelCurrent >= this.#levels.length) {
+            this.gameOver();
+        } else {
+            let callback = this.#levels[this.#levelCurrent].start();
+        }
     }
 
     gameOver() {
-
+        leaderBoard.addPlayer(this.#player);
+        leaderBoard.draw(document.querySelector('main'));
     }
 
 }

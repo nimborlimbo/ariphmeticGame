@@ -1,37 +1,15 @@
 "use strict";
-let levelsInfoArr = 
-    [
-        {
-            "name": "Четные / Нечетные",
-            "desc": "После того, как выпадет случайное условие(четное или нечетное), на экране появятся числа, хаотично движущиеся по экрану. Ваша задача – нажать на те из них, которые удовлетворяют выпавшее условие. Уровень закончится после выбора 5 чисел либо после истечения указанного времени.",
-            "time": 60,
-            "score": 10
-        },
-        {
-            "name": "Арифметическая прогрессия",
-            "desc": "На экране появятся несколько примеров алгебраической и геометрической прогрессий. Ваша задача – продолжить их. Если прогрессия решена верно, то ее поле станет зеленым, иначе красным. Уровень закончится, если все поля станут зелеными или, если истечет указанное время.",
-            "time": 90,
-            "score": 20
-        },
-        {
-            "name": "Арифметическое выражение",
-            "desc": "На экране в случайном порядке будут появлятся числа. Ваша задача – собрать из символов, которые будут указаны внизу экрана, выражение, равно выпавшему числу. Чем больше выражение Вы соберете, тем больше балов получите. Уровень закончится после истечения указанного времени.",
-            "time": 90,
-            "score": 30
-        },
-        
-    ];
 
 class MainScreen {
     #screen; #bottomMenu;
-    #leaderBoard = new LeaderBoard();
 
     constructor() {
         this.#screen = document.createElement('div');
         this.#screen.className = "main-screen";
+        leaderBoard = new LeaderBoard();
 
         let countLevels = document.createElement('h1');
-        countLevels.insertAdjacentHTML('beforeend', "Количество уровней: <span>" + levelsInfoArr.length + "</span>");
+        countLevels.insertAdjacentHTML('beforeend', "Количество уровней: <span>" + Object.keys(levelsInfoArr).length + "</span>");
 
         this.#screen.insertAdjacentElement('beforeend', countLevels);
     
@@ -53,22 +31,24 @@ class MainScreen {
         let name = this.#switchBottomMenu();
         if (name != false) {
             this.#screen.remove();
-            game = new Game(new Player(name)).nextLevel();
+            game = new Game(new Player(name));
+            game.nextLevel();
         }
     }
 
     openLeaderBoard = () => {
         document.querySelector('main').innerHTML = "";
-        this.#leaderBoard.draw(document.querySelector('main'));
+        leaderBoard.draw(document.querySelector('main'));
     }
 
     #createLevelInfoList() {
         let levelsInfoList = document.createElement('div');
         levelsInfoList.className = "levels-info-list";
-    
-        levelsInfoArr.forEach((item, index) => {
+        let index = 0;
+        for (var [key, item] of Object.entries(levelsInfoArr)) {
             levelsInfoList.insertAdjacentElement('beforeend', this.#createLevelInfoItem(index+1, item.name, item.desc, item.time, item.score));
-        });
+            index++;
+        }
         return levelsInfoList;
     }
 
